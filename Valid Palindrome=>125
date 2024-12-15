@@ -1,0 +1,11 @@
+class Solution {
+    /**
+     * @param String $s
+     * @return Boolean
+     */
+    function isPalindrome($s) {
+        $filtered = preg_replace('/[^a-zA-Z0-9]/', '', $s);
+        $filtered = strtolower($filtered);/$filtered = strtoupper($filtered);         
+        return $filtered === strrev($filtered); 
+    }
+}
