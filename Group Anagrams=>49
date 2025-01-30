@@ -1,0 +1,20 @@
+<?php
+class Solution {
+    public function groupAnagrams($strs) {
+        $anagramGroups = [];
+        foreach ($strs as $word) {
+            $sortedWord = str_split($word);
+            sort($sortedWord); 
+            $sortedWord = implode('', $sortedWord);
+            if (!isset($anagramGroups[$sortedWord])) {
+                $anagramGroups[$sortedWord] = [];
+            }
+            $anagramGroups[$sortedWord][] = $word;
+        }
+        return array_values($anagramGroups);
+    }
+}
+$solution = new Solution();
+$input = ["eat", "tea", "tan", "ate", "nat", "bat"];
+print_r($solution->groupAnagrams($input));
+?>
