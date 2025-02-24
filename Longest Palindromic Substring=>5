@@ -1,0 +1,30 @@
+<?php
+class Solution {
+    private function expandAroundCenter(string $s, int $left, int $right): string {
+        while ($left >= 0 && $right < strlen($s) && $s[$left] === $s[$right]) {
+            $left--;
+            $right++;
+        }
+        return substr($s, $left + 1, $right - $left - 1);
+    }
+    public function longestPalindrome(string $s): string {
+        $longest = "";
+        for ($i = 0; $i < strlen($s); $i++) {
+            // Odd length palindrome
+            $odd = $this->expandAroundCenter($s, $i, $i);
+            if (strlen($odd) > strlen($longest)) {
+                $longest = $odd;
+            }
+            // Even length palindrome
+            $even = $this->expandAroundCenter($s, $i, $i + 1);
+            if (strlen($even) > strlen($longest)) {
+                $longest = $even;
+            }
+        }
+        return $longest;
+    }
+}
+$solution = new Solution();
+$input = "babad";
+echo $solution->longestPalindrome($input);
+?>
