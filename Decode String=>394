@@ -1,0 +1,31 @@
+<?php
+class Solution {
+    function decodeString($s) {
+        $stack = [];
+        $num = 0;
+        $curStr = "";
+        for ($i = 0; $i < strlen($s); $i++) {
+            $char = $s[$i];
+            if (is_numeric($char)) {
+                // Build the number for k (can be multi-digit)
+                $num = $num * 10 + intval($char);
+            } elseif ($char === '[') {
+                // Push the current string and number onto the stack
+                array_push($stack, $curStr, $num);
+                $curStr = "";
+                $num = 0;
+            } elseif ($char === ']') {
+                // Pop the number and previous string from the stack
+                $repeatTimes = array_pop($stack);
+                $prevStr = array_pop($stack);
+                // Repeat the current string and append to previous string
+                $curStr = $prevStr . str_repeat($curStr, $repeatTimes);
+            } else {
+                // Append characters to the current string
+                $curStr .= $char;
+            }
+        }
+        return $curStr;
+    }
+}
+?>
