@@ -1,0 +1,39 @@
+class Solution {
+    /**
+     * @param String $s
+     * @param String $t
+     * @return String
+     */
+    function minWindow($s, $t) {
+        if (empty($s) || empty($t)) return "";
+        $t_freq = array_count_values(str_split($t)); // Count frequency of t
+        $window_counts = [];
+        $required = count($t_freq); // Unique characters required
+        $formed = 0; // Unique characters matched        
+        $l = 0;
+        $r = 0;
+        $min_length = PHP_INT_MAX;
+        $min_window = "";
+        while ($r < strlen($s)) {
+            $char = $s[$r];
+            $window_counts[$char] = ($window_counts[$char] ?? 0) + 1;
+            if (isset($t_freq[$char]) && $window_counts[$char] == $t_freq[$char]) {
+                $formed++;
+            }
+            while ($l <= $r && $formed == $required) {
+                $char = $s[$l];
+                if ($r - $l + 1 < $min_length) {
+                    $min_length = $r - $l + 1;
+                    $min_window = substr($s, $l, $min_length);
+                }
+                $window_counts[$char]--;
+                if (isset($t_freq[$char]) && $window_counts[$char] < $t_freq[$char]) {
+                    $formed--;
+                }
+                $l++; // Shrink the window
+            }
+            $r++; // Expand the window
+        }
+        return $min_window;
+    }
+}
