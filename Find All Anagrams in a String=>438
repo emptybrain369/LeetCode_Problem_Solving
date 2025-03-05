@@ -1,0 +1,41 @@
+class Solution {
+    /**
+     * @param String $s
+     * @param String $p
+     * @return Integer[]
+     */
+    function findAnagrams($s, $p) {
+        $sLength = strlen($s);
+        $pLength = strlen($p);
+        $result = [];
+
+        if ($sLength < $pLength) {
+            return $result;
+        }
+        // Character frequency arrays
+        $pCount = array_fill(0, 26, 0);
+        $sCount = array_fill(0, 26, 0);        
+        // Fill frequency array for pattern p
+        for ($i = 0; $i < $pLength; $i++) {
+            $pCount[ord($p[$i]) - ord('a')]++;
+            $sCount[ord($s[$i]) - ord('a')]++;
+        }
+        // Compare first window
+        if ($pCount === $sCount) {
+            $result[] = 0;
+        }
+        // Sliding window approach
+        for ($i = $pLength; $i < $sLength; $i++) {
+            // Add new character in window
+            $sCount[ord($s[$i]) - ord('a')]++;
+            // Remove old character from window
+            $sCount[ord($s[$i - $pLength]) - ord('a')]--;
+
+            // Compare frequency arrays
+            if ($pCount === $sCount) {
+                $result[] = $i - $pLength + 1;
+            }
+        }
+        return $result;
+    }
+}
